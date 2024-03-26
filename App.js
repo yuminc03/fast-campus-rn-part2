@@ -1,17 +1,19 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import Header from './src/Header';
-import { getStatusBarHeight, getBottomSpace } from 'react-native-iphone-x-helper';
+import { getStatusBarHeight } from 'react-native-iphone-x-helper';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 const statusBarHeight = getStatusBarHeight(true);
-const bottomSpace = getBottomSpace();
-console.log(`${statusBarHeight}, ${bottomSpace}`);
+console.log(`${statusBarHeight}`);
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Header/>
-    </View>
+    <SafeAreaProvider>
+      <SafeAreaView style={styles.container}>
+        <Header/>
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
 
@@ -19,6 +21,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingTop: statusBarHeight,
   },
 });
