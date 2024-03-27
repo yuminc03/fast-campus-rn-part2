@@ -16,6 +16,8 @@ export default function App() {
         name={myProfile.name}
         introduction={myProfile.introduction}
       />
+      <Margin height={15}/>
+      <Division/>
     </View>
   );
 }
