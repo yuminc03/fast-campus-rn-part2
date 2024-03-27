@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { friendProfiles, myProfile } from "./src/data";
 import Header from './src/Header';
@@ -11,8 +12,10 @@ import FriendList from './src/FriendList';
 const statusBarHeight = getStatusBarHeight(true);
 
 export default function App() {
+  const [ isOpened, setIsOpened ] = useState(true);
   const onPressArrow = () => {
     console.log('clicked arrow');
+    setIsOpened(!isOpened);
   };
 
   return (
@@ -30,11 +33,12 @@ export default function App() {
       <FriendSection
         friendProfileLen={friendProfiles.length}
         onPressArrow={onPressArrow}
+        isOpened={isOpened}
       />
-      <FriendList data={friendProfiles}/>
+      <FriendList data={friendProfiles} isOpened={isOpened}/>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
