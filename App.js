@@ -1,11 +1,12 @@
 import { StyleSheet, View } from 'react-native';
-import { myProfile, friendProfiles } from "./src/data";
+import { friendProfiles, myProfile } from "./src/data";
 import Header from './src/Header';
-import MyProfile from './src/MyProfile';
+import Profile from './src/Profile';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 import Division from './src/Division';
 import Margin from './src/Margin';
 import FriendSection from './src/FriendSection';
+import FriendList from './src/FriendList';
 
 const statusBarHeight = getStatusBarHeight(true);
 
@@ -17,18 +18,20 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Header/>
-      <View style={{ height: 10 }}/>
-      <MyProfile
+      <Margin style={{ height: 10 }}/>
+      <Profile
         uri={myProfile.uri}
         name={myProfile.name}
         introduction={myProfile.introduction}
       />
       <Margin height={15}/>
       <Division/>
-      <FriendSection 
+      <Margin height={12}/>
+      <FriendSection
         friendProfileLen={friendProfiles.length}
         onPressArrow={onPressArrow}
       />
+      <FriendList data={friendProfiles}/>
     </View>
   );
 }
@@ -38,5 +41,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     paddingTop: statusBarHeight,
+    paddingHorizontal: 15,
   },
 });
