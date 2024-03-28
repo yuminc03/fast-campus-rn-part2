@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { friendProfiles, myProfile } from "./src/data";
 import Header from './src/Header';
 import Profile from './src/Profile';
@@ -55,23 +56,28 @@ export default function App() {
   };
 
   return (
-    <View styles={styles.container}>
-      <FlatList
-        contentContainerStyle={{ paddingHorizontal: 15 }}
-        data={isOpened ? friendProfiles : []}
-        keyExtractor={(_, index) => index}
-        stickyHeaderIndices={[0]}
-        ItemSeparatorComponent={ItemSeparatorComponent}
-        renderItem={renderItem}
-        ListHeaderComponent={ListHeaderComponent}
-        ListFooterComponent={ListFooterComponent}
-        showsVerticalScrollIndicator={false}
-      />
-      <TabBar
-        selectedTabIndex={selectedTabIndex}
-        setSelectedTabIndex={setSelectedTabIndex}
-      />
-    </View>
+    <SafeAreaProvider>
+      <SafeAreaView
+        style={styles.container}
+        edges={['top', 'right', 'bottom', 'left']} // 예외없이 모두 안전영역 적용
+      >
+        <FlatList
+          contentContainerStyle={{ paddingHorizontal: 15 }}
+          data={isOpened ? friendProfiles : []}
+          keyExtractor={(_, index) => index}
+          stickyHeaderIndices={[0]}
+          ItemSeparatorComponent={ItemSeparatorComponent}
+          renderItem={renderItem}
+          ListHeaderComponent={ListHeaderComponent}
+          ListFooterComponent={ListFooterComponent}
+          showsVerticalScrollIndicator={false}
+        />
+        <TabBar
+          selectedTabIndex={selectedTabIndex}
+          setSelectedTabIndex={setSelectedTabIndex}
+        />
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 
   return (
@@ -90,6 +96,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingTop: statusBarHeight,
   },
 });
