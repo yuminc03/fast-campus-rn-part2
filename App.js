@@ -4,14 +4,11 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { friendProfiles, myProfile } from "./src/data";
 import Header from './src/Header';
 import Profile from './src/Profile';
-import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 import Division from './src/Division';
 import Margin from './src/Margin';
 import FriendSection from './src/FriendSection';
 import FriendList from './src/FriendList';
 import TabBar from './src/TabBar';
-
-const statusBarHeight = getStatusBarHeight(true);
 
 export default function App() {
   const [ isOpened, setIsOpened ] = useState(true);
@@ -51,7 +48,6 @@ export default function App() {
   const ListFooterComponent = () => null;
   
   const onPressArrow = () => {
-    // console.log('clicked arrow');
     setIsOpened(!isOpened);
   };
 
