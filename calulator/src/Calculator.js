@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import { Text, TouchableOpacity, View } from "react-native"
 import styled from 'styled-components';
 
@@ -41,11 +41,28 @@ const ButtonContainer = styled.View`
   flex-direction: row;
   width: 100%;
 `;
+const InputContainer = styled.View`
+  background-color: ${COLOR.RESULT};
+  min-height: 50px;
+  justify-content: center;
+  align-items: flex-end;
+  padding: 10px 0px;
+`;
+//padding: 10px 0px; // top, bottom(vertical), left, right(horizontal)
 
 export default () => {
+  const [input, setInput] = useState(0);
+  const [currentOperator, setCurrentOperator] = useState(null);
+  const [result, setResult] = useState(null);
+  const [tempInput, setTempInput] = useState(null);
+  const [tempOperator, setTempOperator] = useState(null);
+
   return (
-    <View style={{ flex: 1, width: 250 }}>
+    <View style={{ flex: 1, width: 250, justifyContent: "center" }}>
       {/* 결과 */}
+      <InputContainer>
+        <Text style={{ color: "white", fontSize: 35 }}>{input}</Text>
+      </InputContainer>
 
       {/* [AC ~ /] */}
       <ButtonContainer>
