@@ -6,6 +6,7 @@ import { SimpleLineIcons } from '@expo/vector-icons';
 import { getCalendarColumns, getDayColor, getDayText } from './src/util';
 import Margin from './src/Margin';
 import dayjs from 'dayjs';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 const columnSize = 35;
 const Column = ({
@@ -52,39 +53,41 @@ export default function App() {
   const now = dayjs();
   const [selectedDate, setSelectedDate] = useState(now);
   const columns = getCalendarColumns(selectedDate);
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const ListHeaderComponent = () => {
     const currentDateText = dayjs(selectedDate).format("YYYY.MM.DD.");
 
     return (
-    <View>
-      {/* < YYYY.MM.DD. > */}
-      <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
-        <ArrowButton iconName="arrow-left" onPress={() => {}}/>
-        <TouchableOpacity>
-          <Text style={{ fontSize: 20, color: "#404040"}}>{currentDateText}</Text>
-        </TouchableOpacity>
-        <ArrowButton iconName="arrow-right" onPress={() => {}}/>
-      </View>
+      <View>
+        {/* < YYYY.MM.DD. > */}
+        <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+          <ArrowButton iconName="arrow-left" onPress={onPressLeftArrow}/>
+          <TouchableOpacity onPress={showDatePicker}>
+            <Text style={{ fontSize: 20, color: "#404040"}}>{currentDateText}</Text>
+          </TouchableOpacity>
+          <ArrowButton iconName="arrow-right" onPress={onPressRightArrow}/>
+        </View>
 
-      {/* 일 ~ 토 */}
-      <View style={{ flexDirection: "row" }}>
-        {[0, 1, 2, 3, 4, 5, 6].map(day => {
-          const dayText = getDayText(day);
-          const color = getDayColor(day);
-          return (
-            <Column 
-              key={`day-${day}`} 
-              text={dayText} 
-              color={color} 
-              opacity={1}
-              disabled={true}
-            />
-          );
-        })}
+        {/* 일 ~ 토 */}
+        <View style={{ flexDirection: "row" }}>
+          {[0, 1, 2, 3, 4, 5, 6].map(day => {
+            const dayText = getDayText(day);
+            const color = getDayColor(day);
+            return (
+              <Column 
+                key={`day-${day}`} 
+                text={dayText} 
+                color={color} 
+                opacity={1}
+                disabled={true}
+              />
+            );
+          })}
+        </View>
       </View>
-    </View>
     );
   };
+
   const renderItem = ({ item: date }) => {
     const dateText = dayjs(date).get("date");
     const day = dayjs(date).get('day');
@@ -105,6 +108,29 @@ export default function App() {
     );
   };
 
+  const onPressLeftArrow = () => {
+    const newSelectedDate = dayjs(selectedDate).subtract(1, 'month');
+    setSelectedDate(newSelectedDate);
+  };
+
+  const onPressRightArrow = () => {
+    const newSelectedDate = dayjs(selectedDate).add(1, 'month');
+    setSelectedDate(newSelectedDate);
+  }
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = (date) => {
+    setSelectedDate(dayjs(date));
+    hideDatePicker();
+  };
+
   useEffect(() => {
     // runPracticeDayjs();
     // console.log('columns', columns);
@@ -119,6 +145,12 @@ export default function App() {
         numColumns={7}
         renderItem={renderItem}
         ListHeaderComponent={ListHeaderComponent}
+      />
+      <DateTimePickerModal
+        isVisible={isDatePickerVisible}
+        mode="date"
+        onConfirm={handleConfirm}
+        onCancel={hideDatePicker}
       />
     </SafeAreaView>
   );
