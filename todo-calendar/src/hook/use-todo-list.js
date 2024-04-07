@@ -59,6 +59,11 @@ export const useTodoList = () => {
   };
 
   return {
-    
+    todoList,
+    addTodo,
+    removeTodo,
+    toggleTodo,
+    input,
+    setInput,
   };
 }

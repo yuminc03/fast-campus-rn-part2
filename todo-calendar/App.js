@@ -1,15 +1,16 @@
-import { StatusBar } from 'expo-status-bar';
-import { FlatList, SafeAreaView, StyleSheet, Text, Touchable, TouchableOpacity, View } from 'react-native';
-import { runPracticeDayjs } from './src/practice-dayjs';
+import { FlatList, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import { useEffect, useState } from 'react';
 import { SimpleLineIcons } from '@expo/vector-icons';
-import { getCalendarColumns, getDayColor, getDayText } from './src/util';
-import Margin from './src/Margin';
 import dayjs from 'dayjs';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { getStatusBarHeight } from 'react-native-iphone-x-helper';
+
+import { getCalendarColumns, getDayColor, getDayText } from './src/util';
+import { runPracticeDayjs } from './src/practice-dayjs';
 import { useCalendar } from './src/hook/use-calendar';
 import { useTodoList } from './src/hook/use-todo-list';
 
+const statusBarHeight = getStatusBarHeight(true);
 const columnSize = 35;
 
 export default function App() {
@@ -24,7 +25,9 @@ export default function App() {
     subtract1Month,
     add1Month,
   } = useCalendar(now);
-  const {} = useTodoList(selectedDate);
+  const { 
+    todoList
+  } = useTodoList(selectedDate);
   const columns = getCalendarColumns(selectedDate);
   const onPressLeftArrow = subtract1Month;
   const onPressRightArrow = add1Month;
@@ -130,13 +133,34 @@ export default function App() {
   }, [selectedDate]);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
+      <Image 
+        source={{
+          // 출처: https://kr.freepik.com/free-photo/white-crumpled-paper-texture-for-background_1189772.html
+          uri: "https://img.freepik.com/free-photo/white-crumpled-paper-texture-for-background_1373-159.jpg?w=1060&t=st=1667524235~exp=1667524835~hmac=8a3d988d6c33a32017e280768e1aa4037b1ec8078c98fe21f0ea2ef361aebf2c",
+        }}
+        style={{
+          width: "100%",
+          height: "100%",
+          position: 'absolute',
+        }}
+      />
       <FlatList
         data={columns}
         keyExtractor={(_, index) => `column${index}`}
         numColumns={7}
         renderItem={renderItem}
+        contentContainerStyle={{ paddingTop: statusBarHeight }}
         ListHeaderComponent={ListHeaderComponent}
+      />
+      <FlatList
+        data={todoList}
+        // ListHeaderComponent={ListHeaderComponent}
+        renderItem={({ item: todo }) => {
+          return (
+            <Text>{todo.content}</Text>
+          );
+        }}
       />
       <DateTimePickerModal
         isVisible={isDatePickerVisible}
@@ -144,7 +168,7 @@ export default function App() {
         onConfirm={handleConfirm}
         onCancel={hideDatePicker}
       />
-    </SafeAreaView>
+    </View>
   );
 };
 
