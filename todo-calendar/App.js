@@ -3,11 +3,13 @@ import { useEffect } from 'react';
 import dayjs from 'dayjs';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
+import { Ionicons } from '@expo/vector-icons';
 
-import { getCalendarColumns, } from './src/util';
+import { getCalendarColumns } from './src/util';
 import { useCalendar } from './src/hook/use-calendar';
 import { useTodoList } from './src/hook/use-todo-list';
 import Calendar from './src/Calendar';
+import Margin from './src/Margin';
 
 const statusBarHeight = getStatusBarHeight(true);
 
@@ -37,15 +39,49 @@ export default function App() {
   }, [selectedDate]);
 
   const ListHeaderComponent = () => (
-    <Calendar
-      columns={columns}
-      selectedDate={selectedDate}
-      onPressLeftArrow={onPressLeftArrow}
-      onPressRightArrow={onPressRightArrow}
-      onPressHeaderDate={onPressHeaderDate}
-      onPressDate={onPressDate}
-    />
+    <View>
+      <Calendar
+        columns={columns}
+        selectedDate={selectedDate}
+        onPressLeftArrow={onPressLeftArrow}
+        onPressRightArrow={onPressRightArrow}
+        onPressHeaderDate={onPressHeaderDate}
+        onPressDate={onPressDate}
+      />
+      <Margin height={15}/>
+      <View
+        style={{
+          width: 4,
+          height: 4,
+          borderRadius: 4 / 2,
+          backgroundColor: "#a3a3a3",
+          alignSelf: "center",
+        }}
+      />
+      <Margin height={15}/>
+    </View>
   );
+
+  const renderItem = ({ item: todo }) => {
+    const isSuccess = todo.isSuccess;
+    return (
+      <View
+        style={{ 
+          flexDirection: "row",
+          width: 220,
+          alignSelf: "center",
+          paddingVertical: 10,
+          paddingHorizontal: 5,
+          borderBottomWidth: 0.2,
+          borderColor: "#a6a6a6",
+          // backgroundColor: todo.id % 2 === 0 ? "pink" : "lightblue",
+        }}
+      >
+        <Text style={{ flex: 1, fontSize: 14, color: "#595959" }}>{todo.content}</Text>
+        <Ionicons name="checkmark" size={17} color={isSuccess ? "#595959" : "#bfbfbf" }/>
+      </View>
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -64,11 +100,7 @@ export default function App() {
         data={todoList}
         ListHeaderComponent={ListHeaderComponent}
         contentContainerStyle={{ paddingTop: statusBarHeight }}
-        renderItem={({ item: todo }) => {
-          return (
-            <Text>{todo.content}</Text>
-          );
-        }}
+        renderItem={renderItem}
       />
       <DateTimePickerModal
         isVisible={isDatePickerVisible}
