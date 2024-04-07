@@ -8,6 +8,7 @@ import Margin from './src/Margin';
 import dayjs from 'dayjs';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { useCalendar } from './src/hook/use-calendar';
+import { useTodoList } from './src/hook/use-todo-list';
 
 const columnSize = 35;
 
@@ -23,6 +24,7 @@ export default function App() {
     subtract1Month,
     add1Month,
   } = useCalendar(now);
+  const {} = useTodoList(selectedDate);
   const columns = getCalendarColumns(selectedDate);
   const onPressLeftArrow = subtract1Month;
   const onPressRightArrow = add1Month;
