@@ -1,10 +1,10 @@
-import { FlatList, StyleSheet, Text, View, Image } from 'react-native';
+import { FlatList, StyleSheet, Text, View, Image, KeyboardAvoidingView, Platform, Pressable, Keyboard } from 'react-native';
 import { useEffect } from 'react';
 import dayjs from 'dayjs';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Ionicons } from '@expo/vector-icons';
 
-import { ITEM_WIDTH, statusBarHeight } from './src/util';
+import { ITEM_WIDTH, bottomSpace, getCalendarColumns, statusBarHeight } from './src/util';
 import { useCalendar } from './src/hook/use-calendar';
 import { useTodoList } from './src/hook/use-todo-list';
 import Calendar from './src/Calendar';
@@ -84,9 +84,13 @@ export default function App() {
       </View>
     );
   };
+  
+  const onPressAdd = () => {
+
+  };
 
   return (
-    <View style={styles.container}>
+    <Pressable style={styles.container} onPress={Keyboard.dismiss}>
       <Image 
         source={{
           // 출처: https://kr.freepik.com/free-photo/white-crumpled-paper-texture-for-background_1189772.html
@@ -98,17 +102,25 @@ export default function App() {
           position: 'absolute',
         }}
       />
-      <FlatList
-        data={todoList}
-        ListHeaderComponent={ListHeaderComponent}
-        contentContainerStyle={{ paddingTop: statusBarHeight }}
-        renderItem={renderItem}
-      />
+      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}>
+        <View>
+          <FlatList
+            data={todoList}
+            ListHeaderComponent={ListHeaderComponent}
+            contentContainerStyle={{ paddingTop: statusBarHeight + 30 }}
+            renderItem={renderItem}
+          />
+          <AddTodoInput
+            value={input}
+            onChangeText={setInput}
+            placeholder={`${dayjs(selectedDate).format("MM.DD")}에 추가할 todo`}
+            onPressAdd={onPressAdd}
+          />
+        </View>
 
-      <AddTodoInput
-        value={input}
-        onChangeText={setinput}
-      />
+      </KeyboardAvoidingView>
+      
+      <Margin height={bottomSpace}/>
 
       <DateTimePickerModal
         isVisible={isDatePickerVisible}
@@ -116,7 +128,7 @@ export default function App() {
         onConfirm={handleConfirm}
         onCancel={hideDatePicker}
       />
-    </View>
+    </Pressable>
   );
 };
 
