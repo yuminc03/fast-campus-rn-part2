@@ -2,16 +2,14 @@ import { FlatList, StyleSheet, Text, View, Image } from 'react-native';
 import { useEffect } from 'react';
 import dayjs from 'dayjs';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 import { Ionicons } from '@expo/vector-icons';
 
-import { getCalendarColumns } from './src/util';
+import { ITEM_WIDTH, statusBarHeight } from './src/util';
 import { useCalendar } from './src/hook/use-calendar';
 import { useTodoList } from './src/hook/use-todo-list';
 import Calendar from './src/Calendar';
 import Margin from './src/Margin';
-
-const statusBarHeight = getStatusBarHeight(true);
+import AddTodoInput from './src/AddTodoInput';
 
 export default function App() {
   const now = dayjs();
@@ -25,7 +23,11 @@ export default function App() {
     subtract1Month,
     add1Month,
   } = useCalendar(now);
-  const { todoList } = useTodoList(selectedDate);
+  const {
+    todoList,
+    input,
+    setInput,
+  } = useTodoList(selectedDate);
   const columns = getCalendarColumns(selectedDate);
   const onPressLeftArrow = subtract1Month;
   const onPressRightArrow = add1Month;
@@ -68,7 +70,7 @@ export default function App() {
       <View
         style={{ 
           flexDirection: "row",
-          width: 220,
+          width: ITEM_WIDTH,
           alignSelf: "center",
           paddingVertical: 10,
           paddingHorizontal: 5,
@@ -102,6 +104,12 @@ export default function App() {
         contentContainerStyle={{ paddingTop: statusBarHeight }}
         renderItem={renderItem}
       />
+
+      <AddTodoInput
+        value={input}
+        onChangeText={setinput}
+      />
+
       <DateTimePickerModal
         isVisible={isDatePickerVisible}
         mode="date"
