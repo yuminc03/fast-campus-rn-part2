@@ -4,7 +4,14 @@ import { AntDesign } from '@expo/vector-icons';
 
 import { ITEM_WIDTH } from "./util";
 
-export default ({ value, onChangeText, placeholder, onPressAdd }) => {
+export default ({ 
+  value, 
+  onChangeText, 
+  placeholder, 
+  onPressAdd,
+  onSubmitEditing,
+  onFocus, 
+}) => {
   return (
     <View 
       style={{ 
@@ -18,6 +25,8 @@ export default ({ value, onChangeText, placeholder, onPressAdd }) => {
         value={value}
         onChangeText={onChangeText}
         placeholder={placeholder}
+        onSubmitEditing={onSubmitEditing}
+        onFocus={onFocus}
         style={{
           flex: 1,
           padding: 5,

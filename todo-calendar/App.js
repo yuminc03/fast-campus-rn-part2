@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, Text, View, Image, KeyboardAvoidingView, Platform, Pressable, Keyboard } from 'react-native';
+import { FlatList, StyleSheet, Text, View, Image, KeyboardAvoidingView, Platform, Pressable, Keyboard, Alert } from 'react-native';
 import { useEffect } from 'react';
 import dayjs from 'dayjs';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
@@ -25,8 +25,12 @@ export default function App() {
   } = useCalendar(now);
   const {
     todoList,
+    addTodo,
+    removeTodo,
+    toggleTodo,
     input,
     setInput,
+    resetInput,
   } = useTodoList(selectedDate);
   const columns = getCalendarColumns(selectedDate);
   const onPressLeftArrow = subtract1Month;
@@ -66,8 +70,24 @@ export default function App() {
 
   const renderItem = ({ item: todo }) => {
     const isSuccess = todo.isSuccess;
+    const onPress = () => toggleTodo(todo.id);
+    const onLongPress = () => {
+      Alert.alert("삭제하시겠어요?", "", [
+        {
+          style: "cancel",
+          text: "아니오"
+        },
+        {
+          text: "예",
+          onPress: () => removeTodo(todo.id),
+        }
+      ]);
+    };
+
     return (
-      <View
+      <Pressable
+        onPress={onPress}
+        onLongPress={onLongPress}
         style={{ 
           flexDirection: "row",
           width: ITEM_WIDTH,
@@ -81,12 +101,24 @@ export default function App() {
       >
         <Text style={{ flex: 1, fontSize: 14, color: "#595959" }}>{todo.content}</Text>
         <Ionicons name="checkmark" size={17} color={isSuccess ? "#595959" : "#bfbfbf" }/>
-      </View>
+      </Pressable>
     );
   };
   
   const onPressAdd = () => {
+    addTodo();
+    resetInput();
+  };
 
+  const onSubmitEditing = () => {
+    addTodo();
+    resetInput();
+  };
+
+  const onFocus = () => {
+    setTimeout(() => {
+      flatListRef.current?.scrollToEnd();
+    }, 100);
   };
 
   return (
@@ -115,6 +147,9 @@ export default function App() {
             onChangeText={setInput}
             placeholder={`${dayjs(selectedDate).format("MM.DD")}에 추가할 todo`}
             onPressAdd={onPressAdd}
+            onSubmitEditing={onSubmitEditing}
+            blurOnSubmit={false}
+            onFocus={onFocus}
           />
         </View>
 
