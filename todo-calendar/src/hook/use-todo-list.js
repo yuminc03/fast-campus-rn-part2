@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const defaultTodoList = [];
 // {
@@ -21,9 +22,16 @@ const defaultTodoList = [];
 //   isSuccess: true,
 // },
 
+const TODO_LIST_KEY = "TODO_LIST_KEY";
+
 export const useTodoList = (selectedDate) => {
   const [todoList, setTodoList] = useState(defaultTodoList);
   const [input, setInput] = useState("");
+  
+  const saveTodoList = (newTodoList) => {
+    setTodoList(newTodoList);
+    AsyncStorage.setItem(TODO_LIST_KEY, JSON.stringify(newTodoList));
+  };
 
   const addTodo = () => {
     const len = todoList.length;
@@ -37,12 +45,13 @@ export const useTodoList = (selectedDate) => {
         isSuccess: false,
       }
     ];
-    setTodoList(newTodoList);
+    
+    saveTodoList(newTodoList);
   };
 
   const removeTodo = (id) => {
     const newTodoList = todoList.filter(todo => todo.id !== id);
-    setTodoList(newTodoList);
+    saveTodoList(newTodoList);
   };
 
   const toggleTodo = (id) => {
@@ -54,14 +63,29 @@ export const useTodoList = (selectedDate) => {
       };
     });
 
-    setTodoList(newTodoList);
+    saveTodoList(newTodoList);
   };
 
   const resetInput = () => setInput("");
+
   const filteredTodoList = todoList.filter(todo => {
     const isSameDate = dayjs(todo.date).isSame(selectedDate, 'date');
     return isSameDate;
   });
+
+  useEffect(() => {
+    init();
+  }, []);
+
+  const init = async () => {
+    const result = await AsyncStorage.getItem(TODO_LIST_KEY);
+    console.log("result", typeof result, result);
+    if (result) {
+      const newTodoList = JSON.parse(result);
+      console.log("newTodoList", newTodoList);
+      setTodoList(newTodoList);
+    }
+  };
 
   return {
     todoList,
