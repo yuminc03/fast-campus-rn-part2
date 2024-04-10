@@ -8,6 +8,7 @@ import { getDayColor, getDayText } from "./util";
 const columnSize = 35;
 
 export default ({
+  todoList,
   columns,
   selectedDate,
   onPressLeftArrow,
@@ -56,6 +57,7 @@ export default ({
     disabled,
     onPress,
     isSelected,
+    hasTodo,
   }) => {
     return (
       <TouchableOpacity
@@ -74,6 +76,7 @@ export default ({
           style={{
             color: color,
             opacity: opacity,
+            fontWeight: hasTodo ? "bold" : "normal",
           }}
         >
           {text}
@@ -96,8 +99,9 @@ export default ({
     const color = getDayColor(day);
     const isCurrentMonth = dayjs(date).isSame(selectedDate, 'month');
     const onPress = () => onPressDate(date);
-
     const isSelected = dayjs(date).isSame(selectedDate, "date");
+    const hasTodo = todoList.find(todo => dayjs(todo.date).isSame(dayjs(date), 'date'));
+
     return (
       <Column 
         text={dateText} 
@@ -105,6 +109,7 @@ export default ({
         opacity={isCurrentMonth ? 1 : 0.4}
         onPress={onPress}
         isSelected={isSelected}
+        hasTodo={hasTodo}
       />
     );
   };
