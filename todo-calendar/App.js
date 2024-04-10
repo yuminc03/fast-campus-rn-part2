@@ -1,5 +1,5 @@
 import { FlatList, StyleSheet, Text, View, Image, KeyboardAvoidingView, Platform, Pressable, Keyboard, Alert } from 'react-native';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import dayjs from 'dayjs';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Ionicons } from '@expo/vector-icons';
@@ -32,7 +32,9 @@ export default function App() {
     setInput,
     resetInput,
   } = useTodoList(selectedDate);
+
   const columns = getCalendarColumns(selectedDate);
+  const flatListRef = useRef(null);
   const onPressLeftArrow = subtract1Month;
   const onPressRightArrow = add1Month;
   const onPressHeaderDate = showDatePicker;
@@ -104,21 +106,27 @@ export default function App() {
       </Pressable>
     );
   };
+
+  const scrollToEnd = () => {
+    setTimeout(() => {
+      flatListRef.current?.scrollToEnd();
+    }, 200);
+  };
   
   const onPressAdd = () => {
     addTodo();
     resetInput();
+    scrollToEnd();
   };
 
   const onSubmitEditing = () => {
     addTodo();
     resetInput();
+    scrollToEnd();
   };
 
   const onFocus = () => {
-    setTimeout(() => {
-      flatListRef.current?.scrollToEnd();
-    }, 100);
+    scrollToEnd();
   };
 
   return (
@@ -137,10 +145,14 @@ export default function App() {
       <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}>
         <View>
           <FlatList
+            ref={flatListRef}
             data={todoList}
+            focusable={true}
+            style={{ flex: 1 }}
             ListHeaderComponent={ListHeaderComponent}
             contentContainerStyle={{ paddingTop: statusBarHeight + 30 }}
             renderItem={renderItem}
+            showsVerticalScrollIndicator={false}
           />
           <AddTodoInput
             value={input}
