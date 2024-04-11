@@ -2,9 +2,10 @@ import { Text, TouchableOpacity, View } from "react-native";
 
 const headerHeight = 50;
 
-export default ({ selectedAlbumTitle, onPressAddAlbum }) => {
+export default ({ selectedAlbumTitle, isDropdownOpen, onPressAddAlbum, onPressHeader }) => {
   return (
-    <View 
+    <TouchableOpacity 
+      onPress={onPressHeader}
       style={{ 
         height: headerHeight, 
         justifyContent: "center",
@@ -25,6 +26,11 @@ export default ({ selectedAlbumTitle, onPressAddAlbum }) => {
       >
         <Text style={{ fontSize: 12 }}>앨범 추가</Text>
       </TouchableOpacity>
-    </View>
+      {isDropdownOpen && (
+        <View style={{ width: "100%", height: 100, backgroundColor: "lightgray" }}>
+          
+        </View>
+      )}
+    </TouchableOpacity>
   )
 }

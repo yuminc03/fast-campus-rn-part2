@@ -21,6 +21,9 @@ export default function App() {
     setAlbumTitle,
     addAlbum,
     resetAlbumTitle,
+    isDropdownOpen,
+    openDropdown,
+    closeDropdown,
   } = useGallery();
 
   const onPressOpenGallery = () => {
@@ -31,6 +34,8 @@ export default function App() {
     openModal();
   };
   const onSubmitEditing = () => {
+    if (!albumTitle) return;
+
     // 1. 앨범 타이틀 추가
     addAlbum();
     // 2. Modal 닫기 & TextInput의 value 초기화
@@ -68,12 +73,18 @@ export default function App() {
     );
   });
 
+  const onPressHeader = () => {
+    openDropdown();
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       {/* 앨범 DropDown, 앨범 추가 버튼 */}
       <MyDropdownPicker 
         selectedAlbumTitle={selectedAlbum.title}
+        isDropdownOpen={isDropdownOpen}
         onPressAddAlbum={onPressAddAlbum}
+        onPressHeader={onPressHeader}
       />
 
       {/* 앨범 추가하는 TextInputModal */}
@@ -82,6 +93,7 @@ export default function App() {
         albumTitle={albumTitle}
         setAlbumTitle={setAlbumTitle}
         onSubmitEditing={onSubmitEditing}
+        onPressBackdrop={closeModal}
       />
 
       {/* 이미지 리스트 */}
