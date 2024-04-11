@@ -74,7 +74,11 @@ export default function App() {
   });
 
   const onPressHeader = () => {
-    openDropdown();
+    if (isDropdownOpen) {
+      closeDropdown();
+    } else {
+      openDropdown();
+    }
   };
 
   return (
@@ -101,6 +105,7 @@ export default function App() {
         data={imagesWithAddButton}
         renderItem={renderItem}
         numColumns={3}
+        style={{ zIndex: -1 }}
       />
     </SafeAreaView>
   );
