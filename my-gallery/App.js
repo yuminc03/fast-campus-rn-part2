@@ -1,16 +1,42 @@
 import { StyleSheet, Text, View, Button, Image, FlatList, SafeAreaView, Platform, Dimensions, Alert, TouchableOpacity } from 'react-native';
+import { useState } from 'react';
+
 import { useGallery } from './src/use-gallery';
+import MyDropdownPicker from './src/MyDropdownPicker';
+import TextInputModal from './src/TextInputModal';
 
 const width = Dimensions.get("screen").width;
 const columnSize = width / 3;
 
 export default function App() {
-  const { images, imagesWithAddButton, pickImage, deleteImage } = useGallery();
+  const { 
+    imagesWithAddButton, 
+    pickImage, 
+    deleteImage,
+    selectedAlbum,
+    modalVisible,
+    openModal, 
+    closeModal,
+    albumTitle,
+    setAlbumTitle,
+    addAlbum,
+    resetAlbumTitle,
+  } = useGallery();
 
   const onPressOpenGallery = () => {
     pickImage();
   };
   const onLongPressImage = (imageID) => deleteImage(imageID);
+  const onPressAddAlbum = () => {
+    openModal();
+  };
+  const onSubmitEditing = () => {
+    // 1. 앨범 타이틀 추가
+    addAlbum();
+    // 2. Modal 닫기 & TextInput의 value 초기화
+    closeModal();
+    resetAlbumTitle();
+  };
 
   const renderItem = (({ item: { id, uri }, index }) => {
     if (id === -1) {
@@ -44,6 +70,21 @@ export default function App() {
 
   return (
     <SafeAreaView style={styles.container}>
+      {/* 앨범 DropDown, 앨범 추가 버튼 */}
+      <MyDropdownPicker 
+        selectedAlbumTitle={selectedAlbum.title}
+        onPressAddAlbum={onPressAddAlbum}
+      />
+
+      {/* 앨범 추가하는 TextInputModal */}
+      <TextInputModal
+        modalVisible={modalVisible}
+        albumTitle={albumTitle}
+        setAlbumTitle={setAlbumTitle}
+        onSubmitEditing={onSubmitEditing}
+      />
+
+      {/* 이미지 리스트 */}
       <FlatList
         data={imagesWithAddButton}
         renderItem={renderItem}
