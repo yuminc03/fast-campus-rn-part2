@@ -5,20 +5,34 @@ const width = Dimensions.get("screen").width;
 const columnSize = width / 3;
 
 export default function App() {
-  const { images, pickImage } = useGallery();
+  const { images, imagesWithAddButton, pickImage, deleteImage } = useGallery();
 
   const onPressOpenGallery = () => {
     pickImage();
   };
+  const onLongPressImage = (imageID) => deleteImage(imageID);
 
   const renderItem = (({ item: { id, uri }, index }) => {
-    const onLongPress = () => { 
-      Alert.alert("이미지를 삭제하시겠습니까?");
-    };
+    if (id === -1) {
+      return (
+        <TouchableOpacity 
+          onPress={onPressOpenGallery}
+          style={{ 
+            width: columnSize, 
+            height: columnSize, 
+            backgroundColor: "lightgray",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+        <Text style={{ fontWeight: '100', fontSize: 45 }}>+</Text>
+      </TouchableOpacity>
+      );
+    }
     return (
-      <TouchableOpacity onLongPress={onLongPress}>
+      <TouchableOpacity onLongPress={() => onLongPressImage(id)}>
         <Image 
-          source={{ uri: uri }} 
+          source={{ uri: uri }}
           style={{ 
             width: columnSize, 
             height: columnSize 
@@ -30,9 +44,8 @@ export default function App() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Button title='갤러리 열기' onPress={onPressOpenGallery}/>
       <FlatList
-        data={images}
+        data={imagesWithAddButton}
         renderItem={renderItem}
         numColumns={3}
       />

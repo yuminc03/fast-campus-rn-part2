@@ -13,12 +13,12 @@ export const useGallery = () => {
       quality: 1,
     });
 
-    console.log(result);
+    // console.log(result);
 
     if (!result.canceled) {
       const lastID = images.length === 0 ? 0 : images[images.length - 1].id;
       const newImage = {
-        id: lastID,
+        id: lastID + 1,
         uri: result.assets[0].uri,
       }
 
@@ -42,8 +42,17 @@ export const useGallery = () => {
     ]);
   };
 
+  const imagesWithAddButton = [
+    ... images,
+    {
+      id: -1,
+      uri: "",
+    } // 한 개 차지하는 양만 중요함
+  ]
+
   return {
-    images, 
+    images,
+    imagesWithAddButton,
     pickImage,
     deleteImage
   };
