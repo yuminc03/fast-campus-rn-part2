@@ -47,6 +47,17 @@ export default function App() {
     openBigImageModal();
   }
   const onPressAddAlbum = () => {
+    if (albums.length >= 2) {
+      Alert.alert("광고를 시청해야 앨범을 추가할 수 있습니다.", "", [
+        {
+          style: "cancel",
+          text: "닫기",
+        },
+        {
+          text: "광고 시청", 
+        }
+      ])
+    }
     openTextInputModal();
   };
   const onSubmitEditing = () => {
