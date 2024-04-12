@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useGallery } from './src/use-gallery';
 import MyDropdownPicker from './src/MyDropdownPicker';
 import TextInputModal from './src/TextInputModal';
+import BigImageModal from './src/BigImageModal';
 
 const width = Dimensions.get("screen").width;
 const columnSize = width / 3;
@@ -14,9 +15,9 @@ export default function App() {
     pickImage, 
     deleteImage,
     selectedAlbum,
-    modalVisible,
-    openModal, 
-    closeModal,
+    textInputModalVisible,
+    openTextInputModal, 
+    closeTextInputModal,
     albumTitle,
     setAlbumTitle,
     addAlbum,
@@ -34,7 +35,7 @@ export default function App() {
   };
   const onLongPressImage = (imageID) => deleteImage(imageID);
   const onPressAddAlbum = () => {
-    openModal();
+    openTextInputModal();
   };
   const onSubmitEditing = () => {
     if (!albumTitle) return;
@@ -42,7 +43,7 @@ export default function App() {
     // 1. 앨범 타이틀 추가
     addAlbum();
     // 2. Modal 닫기 & TextInput의 value 초기화
-    closeModal();
+    closeTextInputModal();
     resetAlbumTitle();
   };
 
@@ -108,12 +109,15 @@ export default function App() {
 
       {/* 앨범 추가하는 TextInputModal */}
       <TextInputModal
-        modalVisible={modalVisible}
+        textInputModalVisible={textInputModalVisible}
         albumTitle={albumTitle}
         setAlbumTitle={setAlbumTitle}
         onSubmitEditing={onSubmitEditing}
-        onPressBackdrop={closeModal}
+        onPressBackdrop={closeTextInputModal}
       />
+
+      {/* 이미지를 크게 보는 Modal */}
+      <BigImageModal/>
 
       {/* 이미지 리스트 */}
       <FlatList

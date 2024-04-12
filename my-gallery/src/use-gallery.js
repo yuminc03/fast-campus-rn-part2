@@ -11,7 +11,8 @@ export const useGallery = () => {
   const [images, setImages] = useState([]);
   const [selectedAlbum, setSelectedAlbum] = useState(defaultAlbum);
   const [albums, setAlbums] = useState([defaultAlbum]);
-  const [modalVisible, setModalVisible] = useState(false);
+  const [textInputModalVisible, setTextInputModalVisible] = useState(false);
+  const [bigImageModalVisible, setBigImageModalVisible] = useState(false);
   const [albumTitle, setAlbumTitle] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -54,8 +55,8 @@ export const useGallery = () => {
     ]);
   };
 
-  const openModal = () => setModalVisible(true);
-  const closeModal = () => setModalVisible(false);
+  const openTextInputModal = () => setTextInputModalVisible(true);
+  const closeTextInputModal = () => setTextInputModalVisible(false);
   const openDropdown = () => setIsDropdownOpen(true);
   const closeDropdown = () => setIsDropdownOpen(false);
 
@@ -115,9 +116,9 @@ export const useGallery = () => {
     pickImage,
     deleteImage,
     selectedAlbum,
-    modalVisible,
-    openModal, 
-    closeModal,
+    textInputModalVisible,
+    openTextInputModal, 
+    closeTextInputModal,
     albumTitle,
     setAlbumTitle,
     addAlbum,
