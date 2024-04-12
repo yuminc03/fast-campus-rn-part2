@@ -1,11 +1,17 @@
 import * as ImagePicker from 'expo-image-picker';
 import { useEffect, useState } from 'react';
 import { Alert } from 'react-native';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const defaultAlbum = {
   id: 1,
   title: "기본",
-}
+};
+
+const ASYNC_KEY = {
+  IMAGES: "images",
+  ALBUMS: "albums",
+};
 
 export const useGallery = () => {
   const [images, setImages] = useState([]);
@@ -17,6 +23,16 @@ export const useGallery = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
 
+  const _setImages = (newImages) => {
+    setImages(newImages);
+    AsyncStorage.setItem(ASYNC_KEY.IMAGES, JSON.stringify(newImages));
+  };
+
+  const _setAlbums = (newAlbums) => {
+    setAlbums(newAlbums);
+    AsyncStorage.setItem(ASYNC_KEY.ALBUMS, JSON.stringify(newAlbums));
+  };
+
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -26,8 +42,6 @@ export const useGallery = () => {
       quality: 1,
     });
 
-    // console.log(result);
-
     if (!result.canceled) {
       const lastID = images.length === 0 ? 0 : images[images.length - 1].id;
       const newImage = {
@@ -36,7 +50,7 @@ export const useGallery = () => {
         albumID: selectedAlbum.id,
       }
 
-      setImages([... images, newImage]);
+      _setImages([... images, newImage]);
     }
   };
 
@@ -49,8 +63,8 @@ export const useGallery = () => {
       {
         text: "예",
         onPress: () => {
-          const newImages = images.filter(image => image.id !== imageID)
-          setImages(newImages)
+          const newImages = images.filter(image => image.id !== imageID);
+          _setImages(newImages);
         }
       }
     ]);
@@ -70,7 +84,7 @@ export const useGallery = () => {
       title: albumTitle,
     };
 
-    setAlbums([
+    _setAlbums([
       ... albums, 
       newAlbum
     ]);
@@ -96,7 +110,7 @@ export const useGallery = () => {
         text: "예",
         onPress: () => {
           const newAlbums = albums.filter((album) => album.id !== albumID);
-          setAlbums(newAlbums);
+          _setAlbums(newAlbums);
           setSelectedAlbum(defaultAlbum);
         }
       }
@@ -125,18 +139,38 @@ export const useGallery = () => {
     setSelectedImage(nextImage);
   };
 
+  const filteredImages = images.filter((image) => image.albumID === selectedAlbum.id);
   // selectedImage는 null일 가능성 있음
   const showPreviousArrow = filteredImages.findIndex(image => image.id === selectedImage?.id) !== 0;
-  const showNextArrow = filteredImages.findIndex(image => image.id === selectedImage?.id) !== filteredImages.length - 1;
-  const filteredImages = images.filter((image) => image.albumID === selectedAlbum.id);
+  const showNextArrow = filteredImages.findIndex(image => image.id === selectedImage?.id) !== (filteredImages.length - 1);
   const imagesWithAddButton = [
     ... filteredImages,
     {
       id: -1,
       uri: "",
     } // 한 개 차지하는 양만 중요함
-  ]
+  ];
 
+  const initValues = async () => {
+    // image
+    const imagesFromStorage = await AsyncStorage.getItem(ASYNC_KEY.IMAGES);
+    if (imagesFromStorage !== null) {
+      const parsed = JSON.parse(imagesFromStorage);
+      setImages(parsed);
+    }
+
+    // album
+    const albumsFromStorage = await AsyncStorage.getItem(ASYNC_KEY.ALBUMS);
+    if (albumsFromStorage !== null) {
+      const parsed = JSON.parse(albumsFromStorage);
+      setAlbums(parsed);
+    }
+  };
+  
+  useEffect(() => {
+    initValues(); 
+  }, [])
+  
   return {
     imagesWithAddButton,
     pickImage,
