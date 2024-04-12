@@ -1,6 +1,32 @@
-import { Modal, Pressable, View, Image } from "react-native";
+import { Modal, Pressable, View, Image, TouchableOpacity } from "react-native";
+import { SimpleLineIcons } from '@expo/vector-icons';
 
-export default ({ modalVisible, onPressBackdrop, selectedImage }) => {
+const ArrowButton = ({ iconName, onPress }) => {
+  return (
+    <TouchableOpacity
+      onPress={onPress}
+      style={{ 
+        paddingHorizontal: 20, 
+        height: "100%",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <SimpleLineIcons
+        name={iconName}
+        size={20}
+        color="black"
+      />
+    </TouchableOpacity>
+  )
+}
+export default ({ 
+  modalVisible, 
+  onPressBackdrop, 
+  selectedImage,
+  onPressLeftArrow,
+  onPressRightArrow,
+}) => {
   return (
     <Modal
       animationType="alide"
@@ -12,23 +38,30 @@ export default ({ modalVisible, onPressBackdrop, selectedImage }) => {
         style={{ 
           flex: 1,
           justifyContent: "center",
-          alignItems: "center",          
-          // backgroundColor: "lightblue",
-          // opacity: 0.8,
-          backgroundColor: `rgba(115, 155, 115, 0.8)`,
+          alignItems: "center",
+          backgroundColor: `rgba(155, 155, 155, 0.8)`,
         }}
       >
-        <Pressable>
-          <Image 
-            source={{ uri: selectedImage?.uri }} 
-            style={{ 
-              width: 280, 
-              height: 280, 
-              backgroundColor: "white"
-            }}
-            resizeMode="contain"
-          />
-        </Pressable>
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          {/* < 화살표 */}
+          <ArrowButton iconName={"arrow-left"} onPress={onPressLeftArrow}/>
+         
+          {/* 이미지 */}
+          <Pressable>
+            <Image 
+              source={{ uri: selectedImage?.uri }} 
+              style={{ 
+                width: 280, 
+                height: 280, 
+                backgroundColor: "white"
+              }}
+              resizeMode="contain"
+            />
+          </Pressable>
+          
+          {/* > 화살표 */}
+          <ArrowButton iconName={"arrow-right"} onPress={onPressRightArrow}/>
+        </View>
       </Pressable>
     </Modal>
   );

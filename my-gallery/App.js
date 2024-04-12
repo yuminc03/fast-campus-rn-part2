@@ -1,5 +1,4 @@
-import { StyleSheet, Text, View, Button, Image, FlatList, SafeAreaView, Platform, Dimensions, Alert, TouchableOpacity } from 'react-native';
-import { useState } from 'react';
+import { StyleSheet, Text, Image, FlatList, SafeAreaView, Platform, Dimensions, TouchableOpacity } from 'react-native';
 
 import { useGallery } from './src/use-gallery';
 import MyDropdownPicker from './src/MyDropdownPicker';
@@ -60,6 +59,12 @@ export default function App() {
   };
   const onPressBigImageModalBackdrop = () => {
     closeBigImageModal();
+  };
+  const onPressLeftArrow = () => {
+    
+  };
+  const onPressRightArrow = () => {
+
   };
 
   const renderItem = (({ item: image, index }) => {
@@ -137,6 +142,8 @@ export default function App() {
         modalVisible={bigImageModalVisible}
         onPressBackdrop={onPressBigImageModalBackdrop}
         selectedImage={selectedImage}
+        onPressLeftArrow={onPressLeftArrow}
+        onPressRightArrow={onPressRightArrow}
       />
 
       {/* 이미지 리스트 */}
