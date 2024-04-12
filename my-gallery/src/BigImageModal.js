@@ -1,11 +1,12 @@
 import { Modal, Pressable, View, Image, TouchableOpacity } from "react-native";
 import { SimpleLineIcons } from '@expo/vector-icons';
 
-const ArrowButton = ({ iconName, onPress }) => {
+const ArrowButton = ({ iconName, onPress, disabled }) => {
   return (
     <TouchableOpacity
+      disabled={disabled}
       onPress={onPress}
-      style={{ 
+      style={{
         paddingHorizontal: 20, 
         height: "100%",
         justifyContent: "center",
@@ -26,6 +27,8 @@ export default ({
   selectedImage,
   onPressLeftArrow,
   onPressRightArrow,
+  showPreviousArrow,
+  showNextArrow,
 }) => {
   return (
     <Modal
@@ -44,7 +47,10 @@ export default ({
       >
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           {/* < 화살표 */}
-          <ArrowButton iconName={"arrow-left"} onPress={onPressLeftArrow}/>
+          {showPreviousArrow && (
+            <ArrowButton 
+            iconName={"arrow-left"} onPress={onPressLeftArrow} disabled={!showPreviousArrow}/>
+          )}
          
           {/* 이미지 */}
           <Pressable>
@@ -60,7 +66,7 @@ export default ({
           </Pressable>
           
           {/* > 화살표 */}
-          <ArrowButton iconName={"arrow-right"} onPress={onPressRightArrow}/>
+          <ArrowButton iconName={"arrow-right"} onPress={onPressRightArrow} disabled={!showNextArrow}/>
         </View>
       </Pressable>
     </Modal>

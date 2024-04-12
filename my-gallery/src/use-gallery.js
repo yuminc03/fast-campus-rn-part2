@@ -108,7 +108,26 @@ export const useGallery = () => {
   const selectImage = (image) => {
     setSelectedImage(image);
   };
+  const moveToPreviousImage = () => {
+    if (!selectedImage) return;
+    const selectedImageIndex = filteredImages.findIndex(image => image.id === selectedImage.id);
+    const previousImageIndex = selectedImageIndex - 1;
+    if (previousImageIndex < 0) return;
+    const previousImage = filteredImages[previousImageIndex];
+    setSelectedImage(previousImage);
+  };
+  const moveToNextImage = () => {
+    if (!selectedImage) return;
+    const selectedImageIndex = filteredImages.findIndex(image => image.id === selectedImage.id);
+    const nextImageIndex = selectedImageIndex + 1;
+    if (nextImageIndex > filteredImages.length - 1 || previousImageIndex === -1) return;
+    const nextImage = filteredImages[nextImageIndex];
+    setSelectedImage(nextImage);
+  };
 
+  // selectedImage는 null일 가능성 있음
+  const showPreviousArrow = filteredImages.findIndex(image => image.id === selectedImage?.id) !== 0;
+  const showNextArrow = filteredImages.findIndex(image => image.id === selectedImage?.id) !== filteredImages.length - 1;
   const filteredImages = images.filter((image) => image.albumID === selectedAlbum.id);
   const imagesWithAddButton = [
     ... filteredImages,
@@ -141,5 +160,9 @@ export const useGallery = () => {
     closeBigImageModal,
     selectedImage,
     selectImage,
+    moveToPreviousImage,
+    moveToNextImage,
+    showPreviousArrow,
+    showNextArrow,
   };
 };
