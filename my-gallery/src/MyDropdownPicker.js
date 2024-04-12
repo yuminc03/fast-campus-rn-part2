@@ -26,7 +26,7 @@ export default ({
       >
         <Text style={{ fontWeight: "bold" }}>{selectedAlbum.title}</Text>
         <SimpleLineIcons
-          name={isDropdownOpen ? "arrow-down" : "arrow-up"}
+          name={isDropdownOpen ? "arrow-up" : "arrow-down"}
           size={12}
           color="black"
           style={{ marginLeft: 8 }}
