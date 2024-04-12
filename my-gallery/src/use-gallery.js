@@ -15,6 +15,7 @@ export const useGallery = () => {
   const [bigImageModalVisible, setBigImageModalVisible] = useState(false);
   const [albumTitle, setAlbumTitle] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -57,6 +58,8 @@ export const useGallery = () => {
 
   const openTextInputModal = () => setTextInputModalVisible(true);
   const closeTextInputModal = () => setTextInputModalVisible(false);
+  const openBigImageModal = () => setBigImageModalVisible(true);
+  const closeBigImageModal = () => setBigImageModalVisible(false);
   const openDropdown = () => setIsDropdownOpen(true);
   const closeDropdown = () => setIsDropdownOpen(false);
 
@@ -102,6 +105,10 @@ export const useGallery = () => {
 
   const resetAlbumTitle = () => setAlbumTitle("");
 
+  const selectImage = (image) => {
+    setSelectedImage(image);
+  };
+
   const filteredImages = images.filter((image) => image.albumID === selectedAlbum.id);
   const imagesWithAddButton = [
     ... filteredImages,
@@ -129,5 +136,10 @@ export const useGallery = () => {
     albums,
     selectAlbum,
     deleteAlbum,
+    bigImageModalVisible,
+    openBigImageModal,
+    closeBigImageModal,
+    selectedImage,
+    selectImage,
   };
 };

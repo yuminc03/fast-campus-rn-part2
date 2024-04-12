@@ -28,12 +28,21 @@ export default function App() {
     albums,
     selectAlbum,
     deleteAlbum,
+    bigImageModalVisible,
+    openBigImageModal,
+    closeBigImageModal,
+    selectedImage,
+    selectImage,
   } = useGallery();
 
   const onPressOpenGallery = () => {
     pickImage();
   };
   const onLongPressImage = (imageID) => deleteImage(imageID);
+  const onPressImage = (image) => {
+    selectImage(image);
+    openBigImageModal();
+  }
   const onPressAddAlbum = () => {
     openTextInputModal();
   };
@@ -46,8 +55,15 @@ export default function App() {
     closeTextInputModal();
     resetAlbumTitle();
   };
+  const onPressTextInputModalBackdrop = () => {
+    closeTextInputModal();
+  };
+  const onPressBigImageModalBackdrop = () => {
+    closeBigImageModal();
+  };
 
-  const renderItem = (({ item: { id, uri }, index }) => {
+  const renderItem = (({ item: image, index }) => {
+    const { id, uri } = image;
     if (id === -1) {
       return (
         <TouchableOpacity 
@@ -65,7 +81,7 @@ export default function App() {
       );
     }
     return (
-      <TouchableOpacity onLongPress={() => onLongPressImage(id)}>
+      <TouchableOpacity onPress={() => onPressImage(image)} onLongPress={() => onLongPressImage(id)}>
         <Image 
           source={{ uri: uri }}
           style={{ 
@@ -113,11 +129,15 @@ export default function App() {
         albumTitle={albumTitle}
         setAlbumTitle={setAlbumTitle}
         onSubmitEditing={onSubmitEditing}
-        onPressBackdrop={closeTextInputModal}
+        onPressBackdrop={onPressTextInputModalBackdrop}
       />
 
       {/* 이미지를 크게 보는 Modal */}
-      <BigImageModal/>
+      <BigImageModal
+        modalVisible={bigImageModalVisible}
+        onPressBackdrop={onPressBigImageModalBackdrop}
+        selectedImage={selectedImage}
+      />
 
       {/* 이미지 리스트 */}
       <FlatList
