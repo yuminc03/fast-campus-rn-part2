@@ -26,6 +26,7 @@ export default function App() {
     closeDropdown,
     albums,
     selectAlbum,
+    deleteAlbum,
   } = useGallery();
 
   const onPressOpenGallery = () => {
@@ -88,6 +89,10 @@ export default function App() {
     closeDropdown();
   };
 
+  const onLongPressAlbum = (albumID) => {
+    deleteAlbum(albumID);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       {/* 앨범 DropDown, 앨범 추가 버튼 */}
@@ -98,6 +103,7 @@ export default function App() {
         onPressHeader={onPressHeader}
         albums={albums}
         onPressAlbum={onPressAlbum}
+        onLongPressAlbum={onLongPressAlbum}
       />
 
       {/* 앨범 추가하는 TextInputModal */}

@@ -1,5 +1,6 @@
 import * as ImagePicker from 'expo-image-picker';
 import { useEffect, useState } from 'react';
+import { Alert } from 'react-native';
 
 const defaultAlbum = {
   id: 1,
@@ -69,10 +70,33 @@ export const useGallery = () => {
       ... albums, 
       newAlbum
     ]);
+    setSelectedAlbum(newAlbum);
   };
 
   const selectAlbum = (album) => {
     setSelectedAlbum(album);
+  };
+
+  const deleteAlbum = (albumID) => {
+    if (albumID === defaultAlbum.id) {
+      Alert.alert("기본 앨범은 삭제할 수 없습니다.");
+      return;
+    }
+
+    Alert.alert("이미지를 삭제하시겠습니까?", "" , [
+      {
+        style: "cancel",
+        text: "아니요"
+      },
+      {
+        text: "예",
+        onPress: () => {
+          const newAlbums = albums.filter((album) => album.id !== albumID);
+          setAlbums(newAlbums);
+          setSelectedAlbum(defaultAlbum);
+        }
+      }
+    ]);
   };
 
   const resetAlbumTitle = () => setAlbumTitle("");
@@ -103,5 +127,6 @@ export const useGallery = () => {
     closeDropdown,
     albums,
     selectAlbum,
+    deleteAlbum,
   };
 };
