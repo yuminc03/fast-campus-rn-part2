@@ -12,7 +12,7 @@ export const useGallery = () => {
   const [albums, setAlbums] = useState([defaultAlbum]);
   const [modalVisible, setModalVisible] = useState(false);
   const [albumTitle, setAlbumTitle] = useState("");
-  const [isDropdownOpen, setIsDropdonwOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -54,8 +54,8 @@ export const useGallery = () => {
 
   const openModal = () => setModalVisible(true);
   const closeModal = () => setModalVisible(false);
-  const openDropdown = () => setModalVisible(true);
-  const closeDropdown = () => setModalVisible(false);
+  const openDropdown = () => setIsDropdownOpen(true);
+  const closeDropdown = () => setIsDropdownOpen(false);
 
   const addAlbum = () => {
     const lastID = albums.length === 0 ? 0 : albums[albums.length - 1].id;
@@ -68,7 +68,11 @@ export const useGallery = () => {
       ... albums, 
       newAlbum
     ]);
-  }
+  };
+
+  const selectAlbum = (album) => {
+    setSelectedAlbum(album);
+  };
 
   const resetAlbumTitle = () => setAlbumTitle("");
 
@@ -95,5 +99,7 @@ export const useGallery = () => {
     isDropdownOpen,
     openDropdown,
     closeDropdown,
+    albums,
+    selectAlbum,
   };
 };
