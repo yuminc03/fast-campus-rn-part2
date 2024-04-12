@@ -1,5 +1,5 @@
 import * as ImagePicker from 'expo-image-picker';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const defaultAlbum = {
   id: 1,
@@ -30,6 +30,7 @@ export const useGallery = () => {
       const newImage = {
         id: lastID + 1,
         uri: result.assets[0].uri,
+        albumID: selectedAlbum.id,
       }
 
       setImages([... images, newImage]);
@@ -76,8 +77,9 @@ export const useGallery = () => {
 
   const resetAlbumTitle = () => setAlbumTitle("");
 
+  const filteredImages = images.filter((image) => image.albumID === selectedAlbum.id);
   const imagesWithAddButton = [
-    ... images,
+    ... filteredImages,
     {
       id: -1,
       uri: "",
