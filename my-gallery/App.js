@@ -4,6 +4,7 @@ import { useGallery } from './src/use-gallery';
 import MyDropdownPicker from './src/MyDropdownPicker';
 import TextInputModal from './src/TextInputModal';
 import BigImageModal from './src/BigImageModal';
+import ImageList from './src/ImageList';
 
 const width = Dimensions.get("screen").width;
 const columnSize = width / 3;
@@ -86,37 +87,6 @@ export default function App() {
     moveToNextImage();
   };
 
-  const renderItem = (({ item: image, index }) => {
-    const { id, uri } = image;
-    if (id === -1) {
-      return (
-        <TouchableOpacity 
-          onPress={onPressOpenGallery}
-          style={{ 
-            width: columnSize, 
-            height: columnSize, 
-            backgroundColor: "lightgray",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-        <Text style={{ fontWeight: '100', fontSize: 45 }}>+</Text>
-      </TouchableOpacity>
-      );
-    }
-    return (
-      <TouchableOpacity onPress={() => onPressImage(image)} onLongPress={() => onLongPressImage(id)}>
-        <Image 
-          source={{ uri: uri }}
-          style={{ 
-            width: columnSize, 
-            height: columnSize 
-          }}
-        />
-      </TouchableOpacity>
-    );
-  });
-
   const onPressHeader = () => {
     if (isDropdownOpen) {
       closeDropdown();
@@ -166,13 +136,13 @@ export default function App() {
         showPreviousArrow={showPreviousArrow}
         showNextArrow={showNextArrow}
       />
-
+      
       {/* 이미지 리스트 */}
-      <FlatList
-        data={imagesWithAddButton}
-        renderItem={renderItem}
-        numColumns={3}
-        style={{ zIndex: -1 }}
+      <ImageList
+        imagesWithAddButton={imagesWithAddButton}
+        onPressOpenGallery={onPressOpenGallery}
+        onPressImage={onPressImage}
+        onLongPressImage={onLongPressImage}
       />
     </SafeAreaView>
   );

@@ -47,10 +47,7 @@ export default ({
       >
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           {/* < 화살표 */}
-          {showPreviousArrow && (
-            <ArrowButton 
-            iconName={"arrow-left"} onPress={onPressLeftArrow} disabled={!showPreviousArrow}/>
-          )}
+          <ArrowButton iconName={"arrow-left"} onPress={onPressLeftArrow} disabled={!showPreviousArrow}/>
          
           {/* 이미지 */}
           <Pressable>
