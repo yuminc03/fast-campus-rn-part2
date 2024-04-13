@@ -1,4 +1,4 @@
-import { StyleSheet, Text, Image, FlatList, SafeAreaView, Platform, Dimensions, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, Image, FlatList, SafeAreaView, Platform, Dimensions, TouchableOpacity, Alert } from 'react-native';
 
 import { useGallery } from './src/use-gallery';
 import MyDropdownPicker from './src/MyDropdownPicker';
@@ -45,7 +45,10 @@ export default function App() {
   const onPressImage = (image) => {
     selectImage(image);
     openBigImageModal();
-  }
+  };
+  const onPressWatchAd = () => {
+    console.log("load ad");
+  };
   const onPressAddAlbum = () => {
     if (albums.length >= 2) {
       Alert.alert("광고를 시청해야 앨범을 추가할 수 있습니다.", "", [
@@ -54,7 +57,8 @@ export default function App() {
           text: "닫기",
         },
         {
-          text: "광고 시청", 
+          text: "광고 시청",
+          onPress: onPressWatchAd,
         }
       ])
     }
