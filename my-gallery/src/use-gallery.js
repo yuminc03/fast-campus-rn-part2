@@ -134,7 +134,7 @@ export const useGallery = () => {
     if (!selectedImage) return;
     const selectedImageIndex = filteredImages.findIndex(image => image.id === selectedImage.id);
     const nextImageIndex = selectedImageIndex + 1;
-    if (nextImageIndex > filteredImages.length - 1 || previousImageIndex === -1) return;
+    if ((nextImageIndex > filteredImages.length - 1) || nextImageIndex === -1) return;
     const nextImage = filteredImages[nextImageIndex];
     setSelectedImage(nextImage);
   };
