@@ -41,24 +41,15 @@ export default ({
       }}>
         {/* M분 S초 / N번째 전 / 여유 */}
         <View style={{ flex: 1 }}>
-          {processedNextBusInfos.map(info => (
+          {processedNextBusInfos.map((info, index) => (
             <NextBusInfo
+              key={`next-bus-info${index}`}
               hasInfo={info.hasInfo}
               remainedTimeText={info.remainedTimeText}
               numOfRemainedStops={info.numOfRemainedStops}
               seatStatusText={info.seatStatusText}
             />
           ))}
-          {/* <NextBusInfo
-            hasInfo={true}
-            remainedTimeText={'8분 0초'}
-            numOfRemainedStops={5}
-            seatStatusText={'여유'}
-          />
-          <NextBusInfo
-            hasInfo={false}
-            remainedTimeText='도착 정보 없음'
-          /> */}
         </View>
         
         {/* 알림아이콘 */}
