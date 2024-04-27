@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { COLOR } from './color';
 
 export default ({
+  NEWCOLOR,
   onPress,
   style
 }) => {

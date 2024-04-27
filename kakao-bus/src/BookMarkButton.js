@@ -3,6 +3,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useState } from "react";
 
 import { COLOR } from './color';
+import { useTheme } from "./use-theme";
 
 const useBookmark = (initialIsBookmarked) => {
   const [isBookmarked, setsIsBookmarked] = useState(initialIsBookmarked);
@@ -15,10 +16,11 @@ const useBookmark = (initialIsBookmarked) => {
 };
 
 export default ({
+  NEWCOLOR,
   size,
   isBookmarked: isBookmarkedProp,
   onPress,
-  style
+  style,
 }) => {
   const {
     isBookmarked,
@@ -36,7 +38,7 @@ export default ({
       <Ionicons 
         name="star" 
         size={size} 
-        color={isBookmarked ? COLOR.YELLOW : COLOR.GRAY_1}
+        color={isBookmarked ? COLOR.YELLOW : NEWCOLOR.GRAY_1_GRAY_4}
       />
     </TouchableOpacity>
   );
