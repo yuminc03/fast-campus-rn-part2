@@ -14,8 +14,8 @@ const busStopBootmarkPadding = 6;
 
 export default function App() {
   const sections = getSections(busStop.buses);
-  const [ now, setNow ] = useState(dayjs());
-  const [ refreshing, setRefreshing ] = useState(false);
+  const [now, setNow] = useState(dayjs());
+  const [refreshing, setRefreshing] = useState(false);
   const onPresssBusStopBookmark = () => {
     
   };
