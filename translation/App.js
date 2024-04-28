@@ -2,15 +2,17 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { useTranslation } from './src/use-translation';
 import Button from './src/Button';
+import { useCookie } from './src/use-cookie';
 
 export default function App() {
   const { t, locale, setLocale } = useTranslation();
+  const { cookieKey } = useCookie();
 
   if (locale === null) return null;
   
   return (
     <View style={styles.container}>
-      <Text>{t('cookie_2')}</Text>
+      <Text>{t(cookieKey)}</Text>
       
       <View style={styles.buttonsContainer}>
         <Button
