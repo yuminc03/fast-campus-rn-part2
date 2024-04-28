@@ -1,10 +1,10 @@
+import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
 
 import { useTranslation } from './src/use-translation';
 import Button from './src/Button';
 import { useCookie } from './src/use-cookie';
-import { useEffect } from 'react';
 
 /**
  * 스플래시 스크린의 아이콘 출처: https://kor.pngtree.com/freepng/fresh-made-crispy-fortune-cookie_6323404.html
@@ -17,14 +17,21 @@ SplashScreen.preventAutoHideAsync();
 export default function App() {
   const { t, locale, setLocale } = useTranslation();
   const { cookieKey } = useCookie();
+  const [isLoaded, setIsLoaded] = useState(false);
   
   useEffect(() => {
-    setTimeout(() => {
-      SplashScreen.hideAsync();
-    }, 2000)
-  }, []);
+    if (locale !== null && cookieKey !== "") {
+      setIsLoaded(true);
+    } 
+  }, [locale, cookieKey]);
 
-  if (locale === null) return null;
+  useEffect(() => {
+    if (isLoaded) {
+      SplashScreen.hideAsync();
+    }
+  }, [isLoaded]);
+
+  // if (locale === null || cookieKey === "") return null;
   
   return (
     <View style={styles.container}>

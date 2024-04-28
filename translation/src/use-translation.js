@@ -11,6 +11,9 @@ const zh = require('./lang/lang.zh.json');
 const i18n = new I18n({
   ko, en, ja, zh
 });
+i18n.enableFallback = true; // 해당하는 locale이 없을 때 default로 설정을 할 것인지 여부
+i18n.defaultLocale = "ko";
+
 const deviceLanguage = getLocales()[0].languageCode;
 const LOCALE_KEY = "locale";
 
