@@ -18,7 +18,8 @@
     "lottie-react-native": "6.5.1",
     "react": "18.2.0",
     "react-native": "0.73.6",
-    "react-string-format": "^1.2.0"
+    "react-string-format": "^1.2.0",
+    "expo-font": "~11.10.3"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
