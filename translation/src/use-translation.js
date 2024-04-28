@@ -8,9 +8,10 @@ const ko = require('./lang/lang.ko.json');
 const en = require('./lang/lang.en.json');
 const ja = require('./lang/lang.ja.json');
 const zh = require('./lang/lang.zh.json');
+const es = require('./lang/lang.es.json');
 
 const i18n = new I18n({
-  ko, en, ja, zh
+  ko, en, ja, zh, es
 });
 i18n.enableFallback = true; // 해당하는 locale이 없을 때 default로 설정을 할 것인지 여부
 i18n.defaultLocale = "ko";
