@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getLocales } from 'expo-localization';
 import { I18n } from 'i18n-js';
 import { useEffect, useState } from 'react';
+import { format } from 'react-string-format';
 
 const ko = require('./lang/lang.ko.json');
 const en = require('./lang/lang.en.json');
@@ -40,5 +41,6 @@ export const useTranslation = () => {
     t: (scope) => i18n.t(scope, { locale }),
     locale,
     setLocale,
+    format
   };
 }

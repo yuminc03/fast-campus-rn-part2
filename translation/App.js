@@ -16,9 +16,13 @@ import LoadingView from './src/LoadingView';
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
-  const { t, locale, setLocale } = useTranslation();
+  const { t, locale, setLocale, format } = useTranslation();
   const { cookieKey } = useCookie();
   const [isLoaded, setIsLoaded] = useState(false);
+  const y = new Date().getFullYear();
+  const m = new Date().getMonth();
+  const d = new Date().getDate();
+  const todayText = format(t('today_is'), y, m, d);
   
   useEffect(() => {
     if (cookieKey !== "") {
@@ -36,6 +40,7 @@ export default function App() {
   
   return (
     <View style={styles.container}>
+      <Text>{todayText}</Text>
       <Text>{t(cookieKey)}</Text>
       
       <View style={styles.buttonsContainer}>
